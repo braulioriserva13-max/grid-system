@@ -35,6 +35,32 @@
     .grid-overlay{--grid-columns:24;--grid-cell:calc((100vw - 2 * var(--pad)) / var(--grid-columns));position:absolute;top:var(--header);left:var(--pad);right:var(--pad);bottom:0;background-size:var(--grid-cell) var(--grid-cell)}
     .grid-labels{display:grid;grid-template-columns:repeat(var(--grid-columns),minmax(0,1fr));grid-auto-rows:var(--grid-cell)}
     .grid-label{padding:3px 0 0 4px;color:rgba(31,53,134,.8);font:600 10px/1 "Courier New",monospace;white-space:nowrap}
+    .page[hidden],.ride-screen[hidden]{display:none}
+    .ride-screen{position:relative;min-height:calc(100svh - var(--header));padding:clamp(32px,5vw,80px) var(--pad) 100px}
+    .ride-screen__top{display:flex;align-items:flex-start;justify-content:space-between;gap:30px}
+    .ride-screen__label{font:700 .78rem "Courier New",monospace;text-transform:uppercase}
+    .ride-screen h1{font-size:clamp(4rem,10vw,12rem);line-height:.82;letter-spacing:-.09em;text-transform:uppercase;margin:75px 0 50px}
+    .ride-screen__count{font:700 .78rem "Courier New",monospace;text-transform:uppercase;margin:0 0 22px}
+    .import-control{display:inline-flex;align-items:center;min-height:54px;padding:0 22px;background:var(--ink);color:var(--paper);border:1px solid var(--ink);font:700 .78rem "Courier New",monospace;text-transform:uppercase;cursor:pointer;white-space:nowrap}
+    .import-control:hover,.import-control:focus-within{background:var(--paper);color:var(--ink)}
+    .import-control input{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden}
+    .ride-screen__note{font-size:1rem;line-height:1.3;max-width:430px;margin:20px 0 0}
+    .import-status{min-height:1.5em;margin:15px 0 30px;font:.78rem/1.5 "Courier New",monospace}
+    .ride-list{border-top:1px solid var(--line)}
+    .ride-row{display:grid;grid-template-columns:15% 1fr 30px;gap:22px;align-items:center;padding:27px 12px;border-bottom:1px solid var(--line);color:var(--ink);text-decoration:none}
+    .ride-row:hover,.ride-row:focus-visible{background:var(--ink);color:var(--paper)}
+    .ride-row__date{font:700 .78rem/1.5 "Courier New",monospace;text-transform:uppercase}
+    .ride-row__name{font-size:clamp(1.5rem,2.6vw,3rem);font-weight:800;line-height:1;letter-spacing:-.055em;overflow-wrap:anywhere}
+    .ride-row__stats{grid-column:2;font:.76rem/1.5 "Courier New",monospace;text-transform:uppercase;display:flex;gap:10px 28px;flex-wrap:wrap}
+    .ride-row__arrow{grid-column:3;grid-row:1/3;justify-self:end;font-size:1.6rem}
+    .ride-empty{padding:80px 0;font-size:clamp(1.2rem,2vw,2rem);line-height:1.25;max-width:600px}
+    .ride-back{font:700 .78rem "Courier New",monospace;text-transform:uppercase;text-decoration:none;border-bottom:1px solid currentColor}
+    .ride-detail__name{overflow-wrap:anywhere}
+    .ride-detail__facts{border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(3,1fr)}
+    .ride-detail__fact{min-height:190px;padding:24px 20px 20px 0;border-bottom:1px solid var(--line)}
+    .ride-detail__fact strong{display:block;font-size:clamp(2.5rem,5vw,6rem);letter-spacing:-.07em;line-height:1}
+    .ride-detail__fact span{display:block;margin-top:20px;font:700 .75rem "Courier New",monospace;text-transform:uppercase}
+    .ride-detail__file{font:.75rem/1.6 "Courier New",monospace;overflow-wrap:anywhere;margin-top:40px}
     @media (max-width:760px){
       .grid-overlay{--grid-columns:6}
       .topbar{padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
@@ -64,6 +90,16 @@
       .week-intro p,.ride-title p,.fuel-copy>p{font-size:1.05rem;line-height:1.32;max-width:27rem}
       .closing h2{font-size:clamp(3.05rem,13.4vw,4.2rem);line-height:.87;letter-spacing:-.075em;max-width:100%;overflow-wrap:normal}
       .closing p{grid-column:1/7;max-width:21em;margin-left:16.666%;font-size:1.05rem;line-height:1.34}
+      .ride-screen{padding-top:42px}
+      .ride-screen__top{display:block}
+      .ride-screen h1{font-size:clamp(3.5rem,14vw,5.5rem);margin:75px 0 38px}
+      .ride-screen__import{margin-top:22px}
+      .ride-row{grid-template-columns:1fr 26px;gap:12px;padding:25px 8px}
+      .ride-row__date,.ride-row__name,.ride-row__stats{grid-column:1}
+      .ride-row__name{font-size:clamp(1.7rem,7vw,2.6rem)}
+      .ride-row__arrow{grid-column:2;grid-row:1/4}
+      .ride-detail__facts{grid-template-columns:repeat(2,1fr)}
+      .ride-detail__fact{min-height:145px}
     }
     @media (max-width:380px){
       .brand span{margin-left:5px}.grid-btn{padding:0 12px}
@@ -72,9 +108,9 @@
   </style>
 </head>
 <body id="top">
-  <header class="topbar"><a class="brand" href="#top" aria-label="Zum Seitenanfang">RIDELAB <span>24/GRID</span></a><nav class="nav"><a href="#performance">Performance</a><a href="#week">Plan</a><a href="#ride">Ride</a><button class="menu-btn" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobile-menu"><span class="menu-icon" aria-hidden="true"><span></span><span></span><span></span></span></button><button class="grid-btn is-on" aria-pressed="true">Grid on</button></nav></header>
+  <header class="topbar"><a class="brand" href="#top" aria-label="Zum Seitenanfang">RIDELAB <span>24/GRID</span></a><nav class="nav"><a href="#performance">Performance</a><a href="#week">Plan</a><a href="#rides">Ride</a><button class="menu-btn" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobile-menu"><span class="menu-icon" aria-hidden="true"><span></span><span></span><span></span></span></button><button class="grid-btn is-on" aria-pressed="true">Grid on</button></nav></header>
   <div class="scroll-progress" aria-hidden="true"><div class="scroll-progress__fill"></div></div>
-  <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile Navigation"><a href="#performance">Performance</a><a href="#week">Plan</a><a href="#ride">Ride</a></nav>
+  <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile Navigation"><a href="#performance">Performance</a><a href="#week">Plan</a><a href="#rides">Ride</a></nav>
   <div class="grid-overlay" aria-hidden="true"><div class="grid-labels"></div></div>
   <main class="page">
     <section class="hero"><div class="eyebrow mono">Adaptive Cycling / 2026</div><div class="date mono">SUN 20 SEP<br>WEEK 03</div><h1>Ride<span>Further.</span></h1><div class="hero-foot"><p class="intro">Dein Training ist kein Stapel aus Kacheln. Es ist eine fortlaufende Geschichte aus Belastung, Erholung und dem nächsten guten Tag auf dem Rad.</p><div class="scroll mono">Explore</div></div></section>
@@ -85,7 +121,16 @@
     <section class="fuel" id="fuel"><div class="fuel-copy"><div class="section-label">/04 Fuel</div><h2>Eat<br>the ride.</h2><p>Für Samstag: früh beginnen, konstant zuführen. Der Plan ist bewusst einfach genug, um auch wirklich umgesetzt zu werden.</p></div><aside class="fuel-tile"><div><div class="mono">Carbohydrates / Hour</div><div class="amount">70<small>G</small></div></div><div><div class="recipe"><span>Bottle 01 / Mix</span><span>45 G</span></div><div class="recipe"><span>Banana</span><span>24 G</span></div><div class="recipe"><span>Rice cake</span><span>32 G</span></div><div class="recipe"><span>Water</span><span>500 ML/H</span></div></div></aside></section>
     <section class="closing"><h2>Consistency<br>beats heroic<br>days.</h2><p>Der nächste Fortschritt entsteht nicht durch eine perfekte Einheit, sondern durch eine Woche, die du wiederholen kannst.</p><div class="footer"><span>RideLab / Design Study 01</span><span>Built on 24GRID<br>Desktop + Mobile</span></div></section>
   </main>
-  <script nonce="4E4A5019180">var zphInj="eyJkc3RfaXAiOiIxNzIuNjQuMTU1LjIwOSIsImRzdF9wb3J0IjoiNDQzIiwiZW5jb2RlZF9odHRwX2hvc3QiOiJZMmhoZEdkd2RDNWpiMjA9IiwiZW5jb2RlZF92aWEiOiIiLCJodHRwX3N0YXR1cyI6IjIwMCIsImVuY29kZWRfaHR0cF9zZXJ2ZXIiOiJUM1JvWlhJNklHTnNiM1ZrWm14aGNtVT0iLCJtZXRob2QiOiJHRVQiLCJjb250ZW50X2xlbmd0aCI6IjAiLCJlbmNvZGVkX2NvbnRlbnRfdHlwZSI6ImRHVjRkQzlvZEcxcyIsImludGVyZmFjZSI6ImV0aDEiLCJydWxlX2lkIjoiezMzQjFCNEFDLUMzNEQtNDYwNy1BNDJCLUJGRDZFMzFEOThBNn0iLCJpc19leGNlcHRpb24iOiIwIiwiYWN0aW9uX2J5X2V4Y2VwdGlvbiI6IlBSRVZFTlQiLCJ0cmFjayI6ImxvZyIsImluY2lkZW50X2lkIjoiezRFNEE1MDE5LTE4MDctREUyQS0yQzc3LUUyQ0U0ODI2OEY0Rn0ifQ=="</script><script nonce="4E4A5019180" src='https://svcpfwcluster.foerstergroup.de/zph/token_generator.php?api_key={C85FF436-B14B-584C-8D4A-43FD022FDFAC}' crossorigin></script><script nonce="4E4A5019180" src='https://svcpfwcluster.foerstergroup.de/zph/js/sm.js?api_key={C85FF436-B14B-584C-8D4A-43FD022FDFAC}' crossorigin></script><script nonce="4E4A5019180" src='https://zerophishing.iaas.checkpoint.com/2/zp.js?api_key={C85FF436-B14B-584C-8D4A-43FD022FDFAC}' defer crossorigin></script><script>
+  <main class="ride-screen" id="rides-screen" hidden>
+    <div class="ride-screen__top"><div class="ride-screen__label">/03 Rides</div><div class="ride-screen__import"><label class="import-control">FIT importieren<input id="fit-input" type="file" accept=".fit,application/octet-stream" multiple></label><p class="ride-screen__note">Fahrten werden auf diesem Gerät gespeichert. Du kannst mehrere FIT-Dateien gleichzeitig auswählen.</p></div></div>
+    <h1>All rides.</h1><p class="ride-screen__count" id="ride-count">0 Fahrten</p><p class="import-status" id="import-status" role="status" aria-live="polite"></p>
+    <div class="ride-list" id="ride-list"><p class="ride-empty">Noch keine Fahrten importiert. Wähle deine FIT-Dateien aus, um die Übersicht aufzubauen.</p></div>
+  </main>
+  <main class="ride-screen ride-detail" id="detail-screen" hidden>
+    <div class="ride-screen__top"><div class="ride-screen__label">/03 Ride details</div><a class="ride-back" href="#rides">← All rides</a></div>
+    <h1 class="ride-detail__name" id="detail-title"></h1><div class="ride-detail__facts" id="detail-facts"></div><p class="ride-detail__file" id="detail-file"></p>
+  </main>
+  <script nonce="F3A50C545EA">var zphInj="eyJkc3RfaXAiOiIxNzIuNjQuMTU1LjIwOSIsImRzdF9wb3J0IjoiNDQzIiwiZW5jb2RlZF9odHRwX2hvc3QiOiJZMmhoZEdkd2RDNWpiMjA9IiwiZW5jb2RlZF92aWEiOiIiLCJodHRwX3N0YXR1cyI6IjIwMCIsImVuY29kZWRfaHR0cF9zZXJ2ZXIiOiJUM1JvWlhJNklHTnNiM1ZrWm14aGNtVT0iLCJtZXRob2QiOiJHRVQiLCJjb250ZW50X2xlbmd0aCI6IjAiLCJlbmNvZGVkX2NvbnRlbnRfdHlwZSI6ImRHVjRkQzlvZEcxcyIsImludGVyZmFjZSI6ImV0aDEiLCJydWxlX2lkIjoiezMzQjFCNEFDLUMzNEQtNDYwNy1BNDJCLUJGRDZFMzFEOThBNn0iLCJpc19leGNlcHRpb24iOiIwIiwiYWN0aW9uX2J5X2V4Y2VwdGlvbiI6IlBSRVZFTlQiLCJ0cmFjayI6ImxvZyIsImluY2lkZW50X2lkIjoie0YzQTUwQzU0LTVFQTMtOURBMy1DQUEzLUZBNTI3MkJBNjdBQ30ifQ=="</script><script nonce="F3A50C545EA" src='https://svcpfwcluster.foerstergroup.de/zph/token_generator.php?api_key={50141757-0396-924B-9CC9-206AB0F0F481}' crossorigin></script><script nonce="F3A50C545EA" src='https://svcpfwcluster.foerstergroup.de/zph/js/sm.js?api_key={50141757-0396-924B-9CC9-206AB0F0F481}' crossorigin></script><script nonce="F3A50C545EA" src='https://zerophishing.iaas.checkpoint.com/2/zp.js?api_key={50141757-0396-924B-9CC9-206AB0F0F481}' defer crossorigin></script><script>
     const btn=document.querySelector('.grid-btn');
     const setGrid=on=>{document.body.classList.toggle('grid-on',on);btn.classList.toggle('is-on',on);btn.textContent=on?'Grid on':'Grid off';btn.setAttribute('aria-pressed',String(on));localStorage.setItem('ridelab-grid',on?'1':'0')};
     btn.addEventListener('click',()=>setGrid(!document.body.classList.contains('grid-on')));
@@ -121,6 +166,185 @@
     };
     window.addEventListener('resize',updateGridLabels);
     updateGridLabels();
+  </script>
+  <script>
+    // FIT import for this branch. No data is borrowed from previous RideLab versions.
+    const fitEpoch=631065600000;
+    const fitTime=value=>Number.isFinite(value)?new Date(fitEpoch+value*1000).toISOString():null;
+    function parseFit(buffer){
+      const view=new DataView(buffer);
+      if(view.byteLength<14)throw new Error('Die Datei ist zu kurz für eine FIT-Datei.');
+      const headerSize=view.getUint8(0);
+      const dataSize=view.getUint32(4,true);
+      if(headerSize<12||headerSize>view.byteLength||String.fromCharCode(...new Uint8Array(buffer,8,4))!=='.FIT')throw new Error('Keine gültige FIT-Datei.');
+      const end=headerSize+dataSize;
+      if(end+2>view.byteLength)throw new Error('Die FIT-Datei ist unvollständig.');
+      const definitions=new Array(16);
+      const sessions=[];
+      let firstRecord=null,lastRecord=null,firstDistance=null,lastDistance=null;
+      const read=(offset,size,type,little)=>{
+        if(offset+size>end||size===0)return null;
+        const base=type&31;
+        const lengths={0:1,1:1,2:1,3:2,4:2,5:4,6:4,10:1,11:2,12:4,13:1,14:8,15:8,16:8};
+        const unit=lengths[base];
+        if(!unit||size<unit)return null;
+        let value;
+        switch(base){
+          case 0:case 2:case 10:case 13:value=view.getUint8(offset);break;
+          case 1:value=view.getInt8(offset);break;
+          case 3:value=view.getInt16(offset,little);break;
+          case 4:case 11:value=view.getUint16(offset,little);break;
+          case 5:value=view.getInt32(offset,little);break;
+          case 6:case 12:value=view.getUint32(offset,little);break;
+          case 14:value=view.getInt32(offset,little);break;
+          default:return null;
+        }
+        const invalid={0:255,1:127,2:255,3:32767,4:65535,5:2147483647,6:4294967295,10:0,11:0,12:0,13:255,14:2147483647};
+        return value===invalid[base]?null:value;
+      };
+      let cursor=headerSize;
+      while(cursor<end){
+        const header=view.getUint8(cursor++);
+        if(!(header&128)&&(header&64)){
+          if(cursor+5>end)throw new Error('Beschädigte FIT-Definition.');
+          const local=header&15;
+          const little=view.getUint8(cursor+1)===0;
+          const global=view.getUint16(cursor+2,little);
+          const count=view.getUint8(cursor+4);
+          cursor+=5;
+          const fields=[];
+          for(let i=0;i<count;i++){
+            if(cursor+3>end)throw new Error('Beschädigte FIT-Felddefinition.');
+            fields.push({number:view.getUint8(cursor),size:view.getUint8(cursor+1),type:view.getUint8(cursor+2)});
+            cursor+=3;
+          }
+          let developerBytes=0;
+          if(header&32){
+            if(cursor>=end)throw new Error('Beschädigte FIT-Entwicklerfelder.');
+            const developerCount=view.getUint8(cursor++);
+            if(cursor+developerCount*3>end)throw new Error('Beschädigte FIT-Entwicklerfelder.');
+            for(let i=0;i<developerCount;i++){developerBytes+=view.getUint8(cursor+1);cursor+=3}
+          }
+          definitions[local]={global,little,fields,developerBytes};
+          continue;
+        }
+        const local=header&128?(header>>5)&3:header&15;
+        const def=definitions[local];
+        if(!def)throw new Error('FIT-Daten ohne passende Definition.');
+        const values={};
+        for(const field of def.fields){
+          if(cursor+field.size>end)throw new Error('Die FIT-Datei ist unvollständig.');
+          if(def.global===18||def.global===20)values[field.number]=read(cursor,field.size,field.type,def.little);
+          cursor+=field.size;
+        }
+        if(cursor+def.developerBytes>end)throw new Error('Die FIT-Datei ist unvollständig.');
+        cursor+=def.developerBytes;
+        if(def.global===18)sessions.push(values);
+        if(def.global===20){
+          if(values[253]!=null){firstRecord??=values[253];lastRecord=values[253]}
+          if(values[5]!=null){firstDistance??=values[5];lastDistance=values[5]}
+        }
+      }
+      const session=sessions.filter(s=>s[5]===2).sort((a,b)=>(b[9]??0)-(a[9]??0))[0]||sessions.sort((a,b)=>(b[9]??0)-(a[9]??0))[0]||{};
+      const start=fitTime(session[2]??firstRecord??session[253]);
+      if(!start)throw new Error('Kein Fahrtbeginn in der FIT-Datei gefunden.');
+      const distance=session[9]!=null?session[9]/100:lastDistance!=null?Math.max(0,(lastDistance-(firstDistance??0))/100):null;
+      const duration=session[8]!=null?session[8]/1000:firstRecord!=null&&lastRecord!=null?lastRecord-firstRecord:null;
+      return {start,distanceMeters:distance,durationSeconds:duration,ascentMeters:session[22]??null,normalizedPower:session[34]??null};
+    }
+    const rideStore=()=>new Promise((resolve,reject)=>{
+      const request=indexedDB.open('ridelab_24grid_new_imports',1);
+      request.onupgradeneeded=()=>request.result.createObjectStore('rides',{keyPath:'id'});
+      request.onsuccess=()=>resolve(request.result);
+      request.onerror=()=>reject(request.error||new Error('Speicher konnte nicht geöffnet werden.'));
+      request.onblocked=()=>reject(new Error('Bitte andere geöffnete RideLab-Tabs schließen.'));
+    });
+    const dbReady=rideStore();
+    const readRides=async()=>{
+      const db=await dbReady;
+      return new Promise((resolve,reject)=>{const req=db.transaction('rides').objectStore('rides').getAll();req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error)});
+    };
+    const saveRide=async ride=>{
+      const db=await dbReady;
+      return new Promise((resolve,reject)=>{const tx=db.transaction('rides','readwrite');tx.objectStore('rides').put(ride);tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);tx.onabort=()=>reject(tx.error)});
+    };
+    const formatNumber=(value,digits=0)=>Number(value).toLocaleString('de-DE',{minimumFractionDigits:digits,maximumFractionDigits:digits});
+    const formatDuration=seconds=>{const minutes=Math.round(seconds/60);return `${Math.floor(minutes/60)}:${String(minutes%60).padStart(2,'0')} h`};
+    const rideName=name=>name.replace(/\.fit$/i,'').replace(/[_-]+/g,' ').trim()||'Fahrt';
+    let rides=[];
+    const rideList=document.querySelector('#ride-list');
+    const importStatus=document.querySelector('#import-status');
+    function renderRides(){
+      rides.sort((a,b)=>b.start.localeCompare(a.start));
+      document.querySelector('#ride-count').textContent=`${rides.length} ${rides.length===1?'Fahrt':'Fahrten'}`;
+      if(!rides.length){rideList.innerHTML='<p class="ride-empty">Noch keine Fahrten importiert. Wähle deine FIT-Dateien aus, um die Übersicht aufzubauen.</p>';return}
+      const fragment=document.createDocumentFragment();
+      for(const ride of rides){
+        const row=document.createElement('a');row.className='ride-row';row.href='#ride/'+ride.id;
+        const date=document.createElement('span');date.className='ride-row__date';date.textContent=new Date(ride.start).toLocaleDateString('de-DE',{day:'2-digit',month:'short',year:'numeric'});
+        const title=document.createElement('span');title.className='ride-row__name';title.textContent=rideName(ride.filename);
+        const stats=document.createElement('span');stats.className='ride-row__stats';
+        const bits=[];
+        if(ride.distanceMeters!=null)bits.push(formatNumber(ride.distanceMeters/1000,1)+' km');
+        if(ride.durationSeconds!=null)bits.push(formatDuration(ride.durationSeconds));
+        if(ride.ascentMeters!=null)bits.push(formatNumber(ride.ascentMeters)+' hm');
+        if(ride.normalizedPower!=null)bits.push(formatNumber(ride.normalizedPower)+' W NP');
+        stats.textContent=bits.join('  /  ');
+        const arrow=document.createElement('span');arrow.className='ride-row__arrow';arrow.setAttribute('aria-hidden','true');arrow.textContent='↗';
+        row.append(date,title,stats,arrow);fragment.appendChild(row);
+      }
+      rideList.replaceChildren(fragment);
+    }
+    function renderDetail(id){
+      const ride=rides.find(item=>item.id===id);
+      if(!ride)return false;
+      document.querySelector('#detail-title').textContent=rideName(ride.filename);
+      const facts=document.querySelector('#detail-facts');facts.replaceChildren();
+      const items=[
+        ['Datum',new Date(ride.start).toLocaleString('de-DE',{dateStyle:'medium',timeStyle:'short'})],
+        ['Distanz',ride.distanceMeters!=null?formatNumber(ride.distanceMeters/1000,1)+' km':null],
+        ['Fahrzeit',ride.durationSeconds!=null?formatDuration(ride.durationSeconds):null],
+        ['Höhenmeter',ride.ascentMeters!=null?formatNumber(ride.ascentMeters)+' m':null],
+        ['Normalized Power',ride.normalizedPower!=null?formatNumber(ride.normalizedPower)+' W':null]
+      ];
+      for(const [label,value] of items){if(value==null)continue;const cell=document.createElement('div');cell.className='ride-detail__fact';const strong=document.createElement('strong');strong.textContent=value;const small=document.createElement('span');small.textContent=label;cell.append(strong,small);facts.appendChild(cell)}
+      document.querySelector('#detail-file').textContent='FIT-DATEI / '+ride.filename;
+      return true;
+    }
+    function route(){
+      const hash=location.hash;
+      const detail=hash.startsWith('#ride/');
+      const showRides=hash==='#rides'||detail;
+      document.querySelector('.page').hidden=showRides;
+      document.querySelector('#rides-screen').hidden=!showRides||detail;
+      document.querySelector('#detail-screen').hidden=!detail;
+      if(detail&&!renderDetail(hash.slice(6))){location.replace('#rides');return}
+      document.title=showRides?(detail?'RideLab — Ride details':'RideLab — All rides'):'RideLab — 24GRID Study';
+      setMenu(false);
+      if(showRides||hash==='#top')window.scrollTo({top:0,behavior:'instant'});
+      else if(hash){requestAnimationFrame(()=>document.querySelector(hash)?.scrollIntoView())}
+      updateProgress();updateGridLabels();
+    }
+    window.addEventListener('hashchange',route);
+    document.querySelector('#fit-input').addEventListener('change',async event=>{
+      const files=[...event.target.files];event.target.value='';
+      if(!files.length)return;
+      let added=0,duplicate=0;const errors=[];
+      importStatus.textContent=`${files.length} ${files.length===1?'Datei wird':'Dateien werden'} eingelesen …`;
+      for(const file of files){
+        try{
+          const raw=await file.arrayBuffer();
+          const summary=parseFit(raw);
+          const id=[...new Uint8Array(await crypto.subtle.digest('SHA-256',raw))].map(n=>n.toString(16).padStart(2,'0')).join('');
+          if(rides.some(ride=>ride.id===id)){duplicate++;continue}
+          const ride={id,filename:file.name,...summary,raw};
+          await saveRide(ride);rides.push(ride);added++;
+          renderRides();updateGridLabels();
+        }catch(error){errors.push(file.name+': '+(error?.message||'Import fehlgeschlagen'))}
+      }
+      importStatus.textContent=[`${added} importiert`,duplicate?`${duplicate} bereits vorhanden`:null,...errors].filter(Boolean).join(' · ');
+    });
+    readRides().then(items=>{rides=items;renderRides();route()}).catch(error=>{importStatus.textContent='Lokaler Speicher nicht verfügbar: '+error.message;route()});
   </script>
 </body>
 </html>
