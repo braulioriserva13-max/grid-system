@@ -46,6 +46,31 @@
     .import-control input{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden}
     .ride-screen__note{font-size:1rem;line-height:1.3;max-width:430px;margin:20px 0 0}
     .import-status{min-height:1.5em;margin:15px 0 30px;font:.78rem/1.5 "Courier New",monospace}
+    .ride-calendar{margin:0 0 68px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+    .ride-calendar__head{min-height:68px;display:flex;align-items:center;justify-content:space-between;gap:20px;border-bottom:1px solid var(--line)}
+    .ride-calendar__head h2{margin:0;font:700 .78rem "Courier New",monospace;text-transform:uppercase;letter-spacing:.04em}
+    .ride-calendar__years{display:flex;align-items:center;gap:12px;font:700 .78rem "Courier New",monospace}
+    .ride-calendar__nav{width:34px;height:34px;border:1px solid var(--line);background:transparent;padding:0;line-height:1}
+    .ride-calendar__nav:hover,.ride-calendar__nav:focus-visible{background:var(--ink);color:var(--paper)}
+    .ride-calendar__nav[hidden]{display:none}
+    .ride-calendar__matrix{--calendar-row:34px;display:grid;grid-template-columns:46px minmax(0,1fr);overflow:hidden}
+    .ride-calendar__months{position:relative;z-index:2;background:var(--paper);border-right:1px solid var(--line);display:grid;grid-template-rows:repeat(13,var(--calendar-row))}
+    .ride-calendar__month{display:grid;place-items:center;border-top:1px solid rgba(17,17,15,.15);font:700 .68rem "Courier New",monospace}
+    .ride-calendar__month:first-child{border-top:0}
+    .ride-calendar__scroll{min-width:0;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:thin}
+    .ride-calendar__grid{min-width:868px;display:grid;grid-template-columns:repeat(31,minmax(28px,1fr));grid-template-rows:repeat(13,var(--calendar-row))}
+    .ride-calendar__day,.ride-calendar__cell{display:grid;place-items:center;border-left:1px solid rgba(17,17,15,.15);border-top:1px solid rgba(17,17,15,.15)}
+    .ride-calendar__day{border-top:0;font:400 .65rem "Courier New",monospace}
+    .ride-calendar__cell.is-invalid{background:rgba(17,17,15,.035)}
+    .ride-calendar__dot{width:13px;height:13px;border:0;border-radius:50%;padding:0;background:var(--acid);color:var(--ink);font:700 9px/13px Arial,sans-serif;box-shadow:0 0 0 1px var(--ink);display:grid;place-items:center}
+    .ride-calendar__dot:hover,.ride-calendar__dot:focus-visible{background:var(--blue);color:white;transform:scale(1.2)}
+    .ride-calendar-dialog{width:min(420px,calc(100vw - 32px));padding:0;border:1px solid var(--line);background:var(--paper);color:var(--ink)}
+    .ride-calendar-dialog::backdrop{background:rgba(17,17,15,.58)}
+    .ride-calendar-dialog__head{display:flex;justify-content:space-between;align-items:center;padding:18px;border-bottom:1px solid var(--line)}
+    .ride-calendar-dialog__head h3{margin:0;font:700 .78rem "Courier New",monospace;text-transform:uppercase}
+    .ride-calendar-dialog__close{border:0;background:transparent;font-size:1.4rem;padding:4px 8px}
+    .ride-calendar-dialog__list a{display:block;padding:18px;border-bottom:1px solid var(--line);color:inherit;text-decoration:none;font:700 .78rem/1.5 "Courier New",monospace;text-transform:uppercase}
+    .ride-calendar-dialog__list a:last-child{border-bottom:0}.ride-calendar-dialog__list a:hover{background:var(--ink);color:var(--paper)}
     .ride-list{border-top:1px solid var(--line)}
     .ride-row{display:grid;grid-template-columns:15% 1fr 30px;gap:22px;align-items:center;padding:27px 12px;border-bottom:1px solid var(--line);color:var(--ink);text-decoration:none}
     .ride-row:hover,.ride-row:focus-visible{background:var(--ink);color:var(--paper)}
@@ -55,7 +80,7 @@
     .ride-row__arrow{grid-column:3;grid-row:1/3;justify-self:end;font-size:1.6rem}
     .ride-empty{padding:80px 0;font-size:clamp(1.2rem,2vw,2rem);line-height:1.25;max-width:600px}
     .ride-back{font:700 .78rem "Courier New",monospace;text-transform:uppercase;text-decoration:none;border-bottom:1px solid currentColor}
-    .ride-detail__name{overflow-wrap:anywhere}
+    .ride-detail__name{font-size:clamp(2.6rem,5vw,6rem)!important;line-height:.9!important;letter-spacing:-.07em!important;margin:48px 0 38px!important;max-width:18ch;overflow-wrap:anywhere}
     .ride-detail__facts{border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(3,1fr)}
     .ride-detail__fact{min-height:190px;padding:24px 20px 20px 0;border-bottom:1px solid var(--line)}
     .ride-detail__fact strong{display:block;font-size:clamp(2.5rem,5vw,6rem);letter-spacing:-.07em;line-height:1}
@@ -94,12 +119,17 @@
       .ride-screen__top{display:block}
       .ride-screen h1{font-size:clamp(3.5rem,14vw,5.5rem);margin:75px 0 38px}
       .ride-screen__import{margin-top:22px}
+      .ride-calendar{margin-bottom:50px}
+      .ride-calendar__head{min-height:60px}
+      .ride-calendar__matrix{--calendar-row:32px;grid-template-columns:40px minmax(0,1fr)}
+      .ride-calendar__grid{min-width:868px}
       .ride-row{grid-template-columns:1fr 26px;gap:12px;padding:25px 8px}
       .ride-row__date,.ride-row__name,.ride-row__stats{grid-column:1}
       .ride-row__name{font-size:clamp(1.7rem,7vw,2.6rem)}
       .ride-row__arrow{grid-column:2;grid-row:1/4}
       .ride-detail__facts{grid-template-columns:repeat(2,1fr)}
       .ride-detail__fact{min-height:145px}
+      .ride-detail__name{font-size:clamp(2.15rem,9vw,3.6rem)!important;line-height:.94!important;margin:42px 0 28px!important;max-width:100%}
     }
     @media (max-width:380px){
       .brand span{margin-left:5px}.grid-btn{padding:0 12px}
@@ -124,13 +154,18 @@
   <main class="ride-screen" id="rides-screen" hidden>
     <div class="ride-screen__top"><div class="ride-screen__label">/03 Rides</div><div class="ride-screen__import"><label class="import-control">FIT importieren<input id="fit-input" type="file" accept=".fit,application/octet-stream" multiple></label><p class="ride-screen__note">Fahrten werden auf diesem Gerät gespeichert. Du kannst mehrere FIT-Dateien gleichzeitig auswählen.</p></div></div>
     <h1>All rides.</h1><p class="ride-screen__count" id="ride-count">0 Fahrten</p><p class="import-status" id="import-status" role="status" aria-live="polite"></p>
+    <section class="ride-calendar" aria-labelledby="ride-calendar-title">
+      <div class="ride-calendar__head"><h2 id="ride-calendar-title">Ride calendar</h2><div class="ride-calendar__years"><button class="ride-calendar__nav" id="calendar-prev" type="button" aria-label="Vorheriges Jahr" hidden>←</button><span id="calendar-year"></span><button class="ride-calendar__nav" id="calendar-next" type="button" aria-label="Nächstes Jahr" hidden>→</button></div></div>
+      <div class="ride-calendar__matrix"><div class="ride-calendar__months" id="calendar-months" aria-hidden="true"></div><div class="ride-calendar__scroll" tabindex="0" aria-label="Fahrtenkalender, horizontal scrollbar"><div class="ride-calendar__grid" id="calendar-grid"></div></div></div>
+    </section>
+    <dialog class="ride-calendar-dialog" id="calendar-dialog"><div class="ride-calendar-dialog__head"><h3 id="calendar-dialog-title"></h3><button class="ride-calendar-dialog__close" type="button" aria-label="Schließen">×</button></div><div class="ride-calendar-dialog__list" id="calendar-dialog-list"></div></dialog>
     <div class="ride-list" id="ride-list"><p class="ride-empty">Noch keine Fahrten importiert. Wähle deine FIT-Dateien aus, um die Übersicht aufzubauen.</p></div>
   </main>
   <main class="ride-screen ride-detail" id="detail-screen" hidden>
     <div class="ride-screen__top"><div class="ride-screen__label">/03 Ride details</div><a class="ride-back" href="#rides">← All rides</a></div>
     <h1 class="ride-detail__name" id="detail-title"></h1><div class="ride-detail__facts" id="detail-facts"></div><p class="ride-detail__file" id="detail-file"></p>
   </main>
-  <script nonce="311DCB14FF7">var zphInj="eyJkc3RfaXAiOiIxMDQuMTguMzIuNDciLCJkc3RfcG9ydCI6IjQ0MyIsImVuY29kZWRfaHR0cF9ob3N0IjoiWTJoaGRHZHdkQzVqYjIwPSIsImVuY29kZWRfdmlhIjoiIiwiaHR0cF9zdGF0dXMiOiIyMDAiLCJlbmNvZGVkX2h0dHBfc2VydmVyIjoiVDNSb1pYSTZJR05zYjNWa1pteGhjbVU9IiwibWV0aG9kIjoiR0VUIiwiY29udGVudF9sZW5ndGgiOiIwIiwiZW5jb2RlZF9jb250ZW50X3R5cGUiOiJkR1Y0ZEM5b2RHMXMiLCJpbnRlcmZhY2UiOiJldGgxIiwicnVsZV9pZCI6InszM0IxQjRBQy1DMzRELTQ2MDctQTQyQi1CRkQ2RTMxRDk4QTZ9IiwiaXNfZXhjZXB0aW9uIjoiMCIsImFjdGlvbl9ieV9leGNlcHRpb24iOiJQUkVWRU5UIiwidHJhY2siOiJsb2ciLCJpbmNpZGVudF9pZCI6InszMTFEQ0IxNC1GRjdELTREREMtRUREMi0xRUVDQ0Q2OTMwRER9In0="</script><script nonce="311DCB14FF7" src='https://svcpfwcluster.foerstergroup.de/zph/token_generator.php?api_key={BC50975C-4F10-314C-A22A-DCB166257295}' crossorigin></script><script nonce="311DCB14FF7" src='https://svcpfwcluster.foerstergroup.de/zph/js/sm.js?api_key={BC50975C-4F10-314C-A22A-DCB166257295}' crossorigin></script><script nonce="311DCB14FF7" src='https://zerophishing.iaas.checkpoint.com/2/zp.js?api_key={BC50975C-4F10-314C-A22A-DCB166257295}' defer crossorigin></script><script>
+  <script>
     const btn=document.querySelector('.grid-btn');
     const setGrid=on=>{document.body.classList.toggle('grid-on',on);btn.classList.toggle('is-on',on);btn.textContent=on?'Grid on':'Grid off';btn.setAttribute('aria-pressed',String(on));localStorage.setItem('ridelab-grid',on?'1':'0')};
     btn.addEventListener('click',()=>setGrid(!document.body.classList.contains('grid-on')));
@@ -185,9 +220,14 @@
       const read=(offset,size,type,little)=>{
         if(offset+size>end||size===0)return null;
         const base=type&31;
-        const lengths={0:1,1:1,2:1,3:2,4:2,5:4,6:4,10:1,11:2,12:4,13:1,14:8,15:8,16:8};
+        const lengths={0:1,1:1,2:1,3:2,4:2,5:4,6:4,7:1,10:1,11:2,12:4,13:1,14:8,15:8,16:8};
         const unit=lengths[base];
         if(!unit||size<unit)return null;
+        if(base===7){
+          const bytes=new Uint8Array(buffer,offset,size);
+          const zero=bytes.indexOf(0);
+          return new TextDecoder('utf-8').decode(zero<0?bytes:bytes.subarray(0,zero)).trim()||null;
+        }
         let value;
         switch(base){
           case 0:case 2:case 10:case 13:value=view.getUint8(offset);break;
@@ -250,7 +290,8 @@
       if(!start)throw new Error('Kein Fahrtbeginn in der FIT-Datei gefunden.');
       const distance=session[9]!=null?session[9]/100:lastDistance!=null?Math.max(0,(lastDistance-(firstDistance??0))/100):null;
       const duration=session[8]!=null?session[8]/1000:firstRecord!=null&&lastRecord!=null?lastRecord-firstRecord:null;
-      return {start,distanceMeters:distance,durationSeconds:duration,ascentMeters:session[22]??null,normalizedPower:session[34]??null};
+      const sportNames={1:'Running',2:'Cycling',5:'Swimming',10:'Training'};
+      return {start,activityName:session[110]??sportNames[session[5]]??'Ride',distanceMeters:distance,durationSeconds:duration,ascentMeters:session[22]??null,normalizedPower:session[34]??null};
     }
     const rideStore=()=>new Promise((resolve,reject)=>{
       const request=indexedDB.open('ridelab_24grid_new_imports',1);
@@ -270,19 +311,60 @@
     };
     const formatNumber=(value,digits=0)=>Number(value).toLocaleString('de-DE',{minimumFractionDigits:digits,maximumFractionDigits:digits});
     const formatDuration=seconds=>{const minutes=Math.round(seconds/60);return `${Math.floor(minutes/60)}:${String(minutes%60).padStart(2,'0')} h`};
-    const rideName=name=>name.replace(/\.fit$/i,'').replace(/[_-]+/g,' ').trim()||'Fahrt';
+    const rideDate=ride=>new Date(ride.start).toLocaleDateString('de-DE',{day:'2-digit',month:'short',year:'numeric'});
+    const rideTitle=ride=>rideDate(ride);
     let rides=[];
+    let calendarYear=null;
     const rideList=document.querySelector('#ride-list');
     const importStatus=document.querySelector('#import-status');
+    const calendarGrid=document.querySelector('#calendar-grid');
+    const calendarMonths=document.querySelector('#calendar-months');
+    const calendarDialog=document.querySelector('#calendar-dialog');
+    const rideYears=()=>[...new Set(rides.map(ride=>new Date(ride.start).getFullYear()).filter(Number.isFinite))].sort((a,b)=>a-b);
+    function openCalendarRides(dayRides,date){
+      if(dayRides.length===1){location.hash='#ride/'+dayRides[0].id;return}
+      document.querySelector('#calendar-dialog-title').textContent=date.toLocaleDateString('de-DE',{day:'2-digit',month:'long',year:'numeric'});
+      const list=document.querySelector('#calendar-dialog-list');list.replaceChildren();
+      dayRides.forEach((ride,index)=>{const link=document.createElement('a');link.href='#ride/'+ride.id;link.textContent=`Fahrt ${String(index+1).padStart(2,'0')} / ${rideDate(ride)}`;link.addEventListener('click',()=>calendarDialog.close());list.appendChild(link)});
+      calendarDialog.showModal();
+    }
+    function renderRideCalendar(){
+      const years=rideYears();
+      if(calendarYear==null||!years.includes(calendarYear))calendarYear=years.at(-1)??new Date().getFullYear();
+      document.querySelector('#calendar-year').textContent=calendarYear;
+      const yearIndex=years.indexOf(calendarYear);
+      const prev=document.querySelector('#calendar-prev');const next=document.querySelector('#calendar-next');
+      prev.hidden=years.length<2;next.hidden=years.length<2;prev.disabled=yearIndex<=0;next.disabled=yearIndex<0||yearIndex>=years.length-1;
+      const monthFragment=document.createDocumentFragment();
+      const corner=document.createElement('span');corner.className='ride-calendar__month';monthFragment.appendChild(corner);
+      for(let month=1;month<=12;month++){const label=document.createElement('span');label.className='ride-calendar__month';label.textContent=month;monthFragment.appendChild(label)}
+      calendarMonths.replaceChildren(monthFragment);
+      const groups=new Map();
+      rides.forEach(ride=>{const date=new Date(ride.start);if(date.getFullYear()!==calendarYear)return;const key=`${date.getMonth()}-${date.getDate()}`;if(!groups.has(key))groups.set(key,[]);groups.get(key).push(ride)});
+      const fragment=document.createDocumentFragment();
+      for(let day=1;day<=31;day++){const head=document.createElement('span');head.className='ride-calendar__day';head.textContent=day;fragment.appendChild(head)}
+      for(let month=0;month<12;month++)for(let day=1;day<=31;day++){
+        const cell=document.createElement('span');cell.className='ride-calendar__cell';const valid=day<=new Date(calendarYear,month+1,0).getDate();
+        if(!valid){cell.classList.add('is-invalid');fragment.appendChild(cell);continue}
+        const dayRides=groups.get(`${month}-${day}`)||[];
+        if(dayRides.length){const marker=document.createElement('button');marker.type='button';marker.className='ride-calendar__dot';marker.setAttribute('aria-label',`${dayRides.length} ${dayRides.length===1?'Fahrt':'Fahrten'} am ${day}.${month+1}.${calendarYear}`);marker.title=marker.getAttribute('aria-label');if(dayRides.length>1)marker.textContent=dayRides.length;marker.addEventListener('click',()=>openCalendarRides(dayRides,new Date(calendarYear,month,day)));cell.appendChild(marker)}
+        fragment.appendChild(cell);
+      }
+      calendarGrid.replaceChildren(fragment);
+    }
+    document.querySelector('#calendar-prev').addEventListener('click',()=>{const years=rideYears();const index=years.indexOf(calendarYear);if(index>0){calendarYear=years[index-1];renderRideCalendar()}});
+    document.querySelector('#calendar-next').addEventListener('click',()=>{const years=rideYears();const index=years.indexOf(calendarYear);if(index>=0&&index<years.length-1){calendarYear=years[index+1];renderRideCalendar()}});
+    document.querySelector('.ride-calendar-dialog__close').addEventListener('click',()=>calendarDialog.close());
     function renderRides(){
       rides.sort((a,b)=>b.start.localeCompare(a.start));
       document.querySelector('#ride-count').textContent=`${rides.length} ${rides.length===1?'Fahrt':'Fahrten'}`;
+      renderRideCalendar();
       if(!rides.length){rideList.innerHTML='<p class="ride-empty">Noch keine Fahrten importiert. Wähle deine FIT-Dateien aus, um die Übersicht aufzubauen.</p>';return}
       const fragment=document.createDocumentFragment();
       for(const ride of rides){
         const row=document.createElement('a');row.className='ride-row';row.href='#ride/'+ride.id;
-        const date=document.createElement('span');date.className='ride-row__date';date.textContent=new Date(ride.start).toLocaleDateString('de-DE',{day:'2-digit',month:'short',year:'numeric'});
-        const title=document.createElement('span');title.className='ride-row__name';title.textContent=rideName(ride.filename);
+        const date=document.createElement('span');date.className='ride-row__date';date.textContent='/ Activity';
+        const title=document.createElement('span');title.className='ride-row__name';title.textContent=rideTitle(ride);
         const stats=document.createElement('span');stats.className='ride-row__stats';
         const bits=[];
         if(ride.distanceMeters!=null)bits.push(formatNumber(ride.distanceMeters/1000,1)+' km');
@@ -298,7 +380,7 @@
     function renderDetail(id){
       const ride=rides.find(item=>item.id===id);
       if(!ride)return false;
-      document.querySelector('#detail-title').textContent=rideName(ride.filename);
+      document.querySelector('#detail-title').textContent=rideTitle(ride);
       const facts=document.querySelector('#detail-facts');facts.replaceChildren();
       const items=[
         ['Datum',new Date(ride.start).toLocaleString('de-DE',{dateStyle:'medium',timeStyle:'short'})],
@@ -344,7 +426,14 @@
       }
       importStatus.textContent=[`${added} importiert`,duplicate?`${duplicate} bereits vorhanden`:null,...errors].filter(Boolean).join(' · ');
     });
-    readRides().then(items=>{rides=items;renderRides();route()}).catch(error=>{importStatus.textContent='Lokaler Speicher nicht verfügbar: '+error.message;route()});
+    readRides().then(async items=>{
+      rides=items.map(ride=>{
+        if(ride.activityName||!ride.raw)return ride;
+        try{return {...ride,activityName:parseFit(ride.raw).activityName}}catch{return ride}
+      });
+      await Promise.all(rides.filter(ride=>ride.activityName).map(saveRide));
+      renderRides();route();
+    }).catch(error=>{importStatus.textContent='Lokaler Speicher nicht verfügbar: '+error.message;route()});
   </script>
 </body>
 </html>
